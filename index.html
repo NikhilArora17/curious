@@ -16,7 +16,12 @@
     --page-bg: #fff;
   }
   html,body{margin:0; background:var(--page-bg); font-family:'Manrope',system-ui,sans-serif;}
-  .wrap{max-width:1200px; margin:64px auto; padding:0 24px;}
+  .wrap {
+  max-width:1025px;   /* total width constraint */
+  margin:64px auto;   /* center horizontally */
+  padding:0 24px;     /* optional inner padding */
+}
+
   .grid{
     display:grid;
     grid-template-columns: repeat(5, minmax(140px,1fr));
