@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Services Grid — Lottie Hover</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gap-x: 80px;
+    --gap-y: 64px;
+    --rail: 170px;          /* fixed rail height so labels align */
+    --icon: 150px;          /* default icon size (overridable per item) */
+    --label: #7f8592;
+    --page-bg: #fff;
+  }
+  html,body{margin:0; background:var(--page-bg); font-family:'Manrope',system-ui,sans-serif;}
+  .wrap{max-width:1200px; margin:64px auto; padding:0 24px;}
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(5, minmax(140px,1fr));
+    column-gap: var(--gap-x);
+    row-gap: var(--gap-y);
+    justify-items:center;
+    align-items:start;
+  }
+  @media (max-width:1100px){ .grid{ grid-template-columns: repeat(3, minmax(140px,1fr)); } }
+  @media (max-width:700px){  .grid{ grid-template-columns: repeat(2, minmax(140px,1fr)); } }
+
+  .card{
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    text-decoration:none; outline:none;
+  }
+
+  /* NEW: fixed rail so text baseline is identical for all cards */
+  .icon-rail{
+    width: var(--rail);
+    height: var(--rail);
+    display: grid;
+    place-items: center;     /* centers the inner icon */
+  }
+
+  /* Inner Lottie container — per-icon adjustable size */
+  .icon{ width:var(--icon); height:var(--icon); }
+  .icon svg{ width:100% !important; height:100% !important; display:block; }
+
+  /* Labels unchanged (same size & alignment as before) */
+  .label{
+    font-weight:200; font-size:18px; line-height:1.3;
+    color:var(--label); text-align:center;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="grid" id="services">
+
+      <a class="card" href="https://your-wix-domain.com/dynamic-lighting" target="_top">
+        <div class="icon-rail">
+          <div class="icon" data-json="lottie/dynamic-lighting.json" data-idleframe="30" style="--icon:120px"></div>
+        </div>
+        <div class="label">Dynamic Lighting</div>
+      </a>
+
+      <a class="card" href="https://your-wix-domain.com/luxury-home-cinema" target="_top">
+        <div class="icon-rail">
+          <div class="icon" data-json="lottie/luxury-cinema.json" data-idleframe="90" style="--icon:120px"></div>
+        </div>
+        <div class="label" style="white-space:nowrap"></style> Luxury Private Cinema</div>
+      </a>
+
+      <a class="card" href="https://your-wix-domain.com/network-solutions" target="_top">
+        <div class="icon-rail">
+          <div class="icon" data-json="lottie/network.json" data-idleframe="60" style="--icon:120px"></div>
+        </div>
+        <div class="label">Network Solutions</div>
+      </a>
+
+      <a class="card" href="https://your-wix-domain.com/audio-solutions" target="_top">
+        <div class="icon-rail">
+          <div class="icon" data-json="lottie/audio.json" data-idleframe="30" style="--icon:120px"></div>
+        </div>
+        <div class="label">Audio Solutions</div>
+      </a>
+
+      <a class="card" href="https://your-wix-domain.com/musical-fountain" target="_top">
+        <div class="icon-rail">
+          <div class="icon" data-json="lottie/musical-fountain.json" data-idleframe="30" style="--icon:120px"></div>
+        </div>
+        <div class="label">Musical Fountain</div>
+      </a>
+
+      <a class="card" href="https://your-wix-domain.com/projection-mapping" target="_top">
+        <div class="icon-rail">
+          <div class="icon" data-json="lottie/projection-mapping.json" data-idleframe="90" style="--icon:120px"></div>
+        </div>
+        <div class="label">Projection Mapping</div>
+      </a>
+
+      <a class="card" href="https://your-wix-domain.com/security-systems" target="_top">
+        <div class="icon-rail">
+          <div class="icon" data-json="lottie/security.json" data-idleframe="90" style="--icon:120px"></div>
+        </div>
+        <div class="label">Security Systems</div>
+      </a>
+
+      <a class="card" href="https://your-wix-domain.com/boardrooms" target="_top">
+        <div class="icon-rail">
+          <div class="icon" data-json="lottie/boardrooms.json" data-idleframe="90" style="--icon:120px"></div>
+        </div>
+        <div class="label">Boardrooms</div>
+      </a>
+
+      <a class="card" href="https://your-wix-domain.com/nightclubs" target="_top">
+        <div class="icon-rail">
+          <div class="icon" data-json="lottie/nightclubs.json" data-idleframe="30" style="--icon:120px"></div>
+        </div>
+        <div class="label">Nightclubs</div>
+      </a>
+
+      <a class="card" href="https://your-wix-domain.com/restaurants-bars" target="_top">
+        <div class="icon-rail">
+          <div class="icon" data-json="lottie/restaurants-bars.json" data-idleframe="59" style="--icon:120px"></div>
+        </div>
+        <div class="label">Restaurants & Bars</div>
+      </a>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <script>
+    document.querySelectorAll('.icon').forEach(icon=>{
+      const json = icon.dataset.json;
+      const idle = Number(icon.dataset.idleframe || 0);
+
+      const anim = lottie.loadAnimation({
+        container: icon,
+        renderer: 'svg',
+        loop: false,
+        autoplay: false,
+        path: json
+      });
+
+      anim.addEventListener('DOMLoaded', ()=>{
+        const safeIdle = Math.min(idle, Math.max(0, Math.floor(anim.totalFrames) - 1));
+        anim.goToAndStop(safeIdle, true);
+      });
+
+      const card = icon.closest('.card');
+
+      // Hover → loop play
+      card.addEventListener('mouseenter', ()=>{
+        anim.loop = true;
+        anim.goToAndPlay(0,true);
+      });
+
+      // Leave → stop + reset to idle
+      card.addEventListener('mouseleave', ()=>{
+        anim.loop = false;
+        anim.stop();
+        const safeIdle = Math.min(idle, Math.max(0, Math.floor(anim.totalFrames) - 1));
+        anim.goToAndStop(safeIdle, true);
+      });
+
+      // Touch: first tap plays loop, second tap navigates
+      let tapped = false;
+      card.addEventListener('touchstart', e=>{
+        if(!tapped){
+          e.preventDefault();
+          anim.loop = true;
+          anim.goToAndPlay(0,true);
+          tapped = true;
+          setTimeout(()=> tapped=false, 700);
+        }
+      }, {passive:false});
+    });
+  </script>
+</body>
+</html>
