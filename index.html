@@ -3,29 +3,61 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Services Grid — 5×2 desktop, 2×5 tablet/mobile</title>
+<title>Services Grid — Our Curiosities</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap" rel="stylesheet">
+<!-- Light (300) and ExtraLight (200) -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300&display=swap" rel="stylesheet">
+
 <style>
   *,*::before,*::after{ box-sizing:border-box; }
 
-  /* MOBILE-FIRST: 2 × 5 */
   :root{
     --wrap-pad: 12px;
     --gap-x: 16px;
     --gap-y: 20px;
-    --rail: 110px;                      /* icon alignment rail */
-    --icon: 88px;                       /* inner icon box (overrides inline) */
+    --rail: 110px;
+    --icon: 88px;
     --label-color: #7f8592;
     --page-bg: #fff;
+
+    --h-color-our: #B1B5C0;
+    --h-color-curiosities: #454E59;
+    --h-size: 24px;      /* mobile default */
+    --copy-size: 12px;
+    --stack-gap: 48px;
   }
 
   html,body{ margin:0; background:var(--page-bg); font-family:'Manrope',system-ui,sans-serif; }
   .wrap{ width:100%; max-width:1600px; margin:40px auto; padding:0 var(--wrap-pad); }
 
+  /* Curiosities section */
+  .curiosities{
+    display:flex; flex-direction:column; gap:var(--stack-gap);
+  }
+  .heading{
+    font-weight:300;
+    line-height:1.2;
+    font-size:var(--h-size);
+    margin:0;
+    text-transform:uppercase;
+    text-align:left; /* left-align with grid */
+  }
+  .heading .our{ color:var(--h-color-our); display:block; }
+  .heading .curiosities-word{ color:var(--h-color-curiosities); display:block; }
+
+  .copy{
+    font-weight:200;
+    font-size:var(--copy-size);
+    line-height:1.6;
+    color:#454E59;
+    margin:0;
+    max-width:80ch;   /* wider paragraph box */
+    text-align:left;
+  }
+
   .grid{
     display:grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 across, 5 down */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: var(--gap-x);
     row-gap: var(--gap-y);
     justify-items:center;
@@ -35,7 +67,7 @@
   .card{
     display:flex; flex-direction:column; align-items:center; gap:8px;
     text-decoration:none; outline:none;
-    min-width:0; /* allow shrink inside track */
+    min-width:0;
   }
 
   .icon-rail{
@@ -43,9 +75,8 @@
     height:var(--rail);
     display:grid; place-items:center;
   }
-
   .icon{
-    width:min(var(--icon),100%) !important;   /* cap to column */
+    width:min(var(--icon),100%) !important;
     height:min(var(--icon),100%) !important;
     aspect-ratio:1/1;
   }
@@ -57,13 +88,12 @@
     line-height:1.25;
     color:var(--label-color);
     text-align:center;
-    white-space:normal;
-    max-width: 16ch;
-    word-break: break-word;
+    max-width:16ch;
+    word-break:break-word;
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
   }
 
-  /* —— TABLET: 2 × 5 with bigger sizing —— */
+  /* —— TABLET —— */
   @media (min-width:750px) and (max-width:999.98px){
     :root{
       --wrap-pad: 20px;
@@ -71,112 +101,97 @@
       --gap-y: 28px;
       --rail: 140px;
       --icon: 112px;
+      --h-size: 24px;
+      --copy-size: 12px;
     }
     .label{ font-size:16px; }
   }
 
-  /* ===== EXACT OVERRIDE: when viewport width is exactly 1752px ===== */
-@media (min-width:1500px) and (max-width:1900px){
-  /* lock container sizing for this width */
-  .wrap{
-    max-width: 1733px;
-    margin: 64px auto;
-    padding: 0 0px;       /* set to 0 if you want the content width to be 1752 exactly */
+
+  /* —— DESKTOP —— */
+  @media (min-width:1000px){
+    .wrap{ margin:64px auto; padding-left:0; padding-right:24px; }
+    .grid{
+      grid-template-columns:repeat(5, minmax(0,1fr));
+      justify-items:start;
+    }
+    :root{
+      --gap-x:48px;
+      --gap-y:48px;
+      --rail:170px;
+      --icon:140px;
+      --h-size:40px;
+      --copy-size:14px;
+    }
+    .label{ font-size:18px; text-align:left; }
   }
 
-  /* keep desktop layout: 5 columns × 2 rows */
-  .grid{
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    column-gap: 56px;
-    row-gap: 44px;
+  /* —— 4K —— */
+  @media (min-width:3840px){
+    :root{
+      --h-size:52px;
+      --copy-size:16px;
+    }
+    .wrap{ max-width:3840px; }
   }
-
-  /* sizes just for 1752 */
-  :root{
-    --rail: 180px;
-    --icon: 148px;
-  }
-  .icon{ --icon: 148px !important; }  /* override any inline --icon */
-  .label{ font-size: 18px; line-height: 1.25; }
-}
-
-  
-  /* —— DESKTOP: 5 × 2 —— */
-@media (min-width:1000px){
-  .wrap{
-    margin: 64px auto;
-    padding-left: 0;      /* ← no left padding on desktop */
-    padding-right: 24px;  /* keep right padding */
-  }
-  .grid{ grid-template-columns: repeat(5, minmax(0, 1fr)); }
-  :root{
-    --gap-x: 48px;
-    --gap-y: 40px;
-    --rail: 170px;
-    --icon: 140px;
-  }
-  .label{ font-size:18px; }
-}
-
-
-
 </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="grid" id="services">
+    <section class="curiosities">
+      <h2 class="heading">
+        <span class="our">OUR</span>
+        <span class="curiosities-word">CURIOSITIES</span>
+      </h2>
 
-      <a class="card" href="https://your-wix-domain.com/dynamic-lighting" target="_top">
-        <div class="icon-rail"><div class="icon" data-json="lottie/dynamic-lighting.json" data-idleframe="30" style="--icon:120px"></div></div>
-        <div class="label">Dynamic Lighting</div>
-      </a>
+      <p class="copy">
+        We call our services Curiosities because they are not merely technical solutions — they are passions pursued with precision, artistry, and a deep respect for the spaces and lives they inhabit. Each is a discipline we have mastered, yet one we continue to explore with fresh eyes and boundless creativity.
+      </p>
 
-      <a class="card" href="https://your-wix-domain.com/luxury-home-cinema" target="_top">
-        <div class="icon-rail"><div class="icon" data-json="lottie/luxury-cinema.json" data-idleframe="90" style="--icon:120px"></div></div>
-        <div class="label">Luxury Private Cinema</div>
-      </a>
-
-      <a class="card" href="https://your-wix-domain.com/network-solutions" target="_top">
-        <div class="icon-rail"><div class="icon" data-json="lottie/network.json" data-idleframe="60" style="--icon:120px"></div></div>
-        <div class="label">Network Solutions</div>
-      </a>
-
-      <a class="card" href="https://your-wix-domain.com/audio-solutions" target="_top">
-        <div class="icon-rail"><div class="icon" data-json="lottie/audio.json" data-idleframe="30" style="--icon:120px"></div></div>
-        <div class="label">Audio Solutions</div>
-      </a>
-
-      <a class="card" href="https://your-wix-domain.com/musical-fountain" target="_top">
-        <div class="icon-rail"><div class="icon" data-json="lottie/musical-fountain.json" data-idleframe="30" style="--icon:120px"></div></div>
-        <div class="label">Musical Fountain</div>
-      </a>
-
-      <a class="card" href="https://your-wix-domain.com/projection-mapping" target="_top">
-        <div class="icon-rail"><div class="icon" data-json="lottie/projection-mapping.json" data-idleframe="90" style="--icon:120px"></div></div>
-        <div class="label">Projection Mapping</div>
-      </a>
-
-      <a class="card" href="https://your-wix-domain.com/security-systems" target="_top">
-        <div class="icon-rail"><div class="icon" data-json="lottie/security.json" data-idleframe="90" style="--icon:120px"></div></div>
-        <div class="label">Security Systems</div>
-      </a>
-
-      <a class="card" href="https://your-wix-domain.com/boardrooms" target="_top">
-        <div class="icon-rail"><div class="icon" data-json="lottie/boardrooms.json" data-idleframe="90" style="--icon:120px"></div></div>
-        <div class="label">Boardrooms</div>
-      </a>
-
-      <a class="card" href="https://your-wix-domain.com/nightclubs" target="_top">
-        <div class="icon-rail"><div class="icon" data-json="lottie/nightclubs.json" data-idleframe="30" style="--icon:120px"></div></div>
-        <div class="label">Nightclubs</div>
-      </a>
-
-      <a class="card" href="https://your-wix-domain.com/restaurants-bars" target="_top">
-        <div class="icon-rail"><div class="icon" data-json="lottie/restaurants-bars.json" data-idleframe="59" style="--icon:120px"></div></div>
-        <div class="label">Restaurants & Bars</div>
-      </a>
-
-    </div>
+      <div class="grid" id="services">
+        <!-- cards unchanged -->
+        <a class="card" href="https://your-wix-domain.com/dynamic-lighting" target="_top">
+          <div class="icon-rail"><div class="icon" data-json="lottie/dynamic-lighting.json" data-idleframe="30" style="--icon:120px"></div></div>
+          <div class="label">Dynamic Lighting</div>
+        </a>
+        <a class="card" href="https://your-wix-domain.com/luxury-home-cinema" target="_top">
+          <div class="icon-rail"><div class="icon" data-json="lottie/luxury-cinema.json" data-idleframe="90" style="--icon:120px"></div></div>
+          <div class="label">Luxury Private Cinema</div>
+        </a>
+        <a class="card" href="https://your-wix-domain.com/network-solutions" target="_top">
+          <div class="icon-rail"><div class="icon" data-json="lottie/network.json" data-idleframe="60" style="--icon:120px"></div></div>
+          <div class="label">Network Solutions</div>
+        </a>
+        <a class="card" href="https://your-wix-domain.com/audio-solutions" target="_top">
+          <div class="icon-rail"><div class="icon" data-json="lottie/audio.json" data-idleframe="30" style="--icon:120px"></div></div>
+          <div class="label">Audio Solutions</div>
+        </a>
+        <a class="card" href="https://your-wix-domain.com/musical-fountain" target="_top">
+          <div class="icon-rail"><div class="icon" data-json="lottie/musical-fountain.json" data-idleframe="30" style="--icon:120px"></div></div>
+          <div class="label">Musical Fountain</div>
+        </a>
+        <a class="card" href="https://your-wix-domain.com/projection-mapping" target="_top">
+          <div class="icon-rail"><div class="icon" data-json="lottie/projection-mapping.json" data-idleframe="90" style="--icon:120px"></div></div>
+          <div class="label">Projection Mapping</div>
+        </a>
+        <a class="card" href="https://your-wix-domain.com/security-systems" target="_top">
+          <div class="icon-rail"><div class="icon" data-json="lottie/security.json" data-idleframe="90" style="--icon:120px"></div></div>
+          <div class="label">Security Systems</div>
+        </a>
+        <a class="card" href="https://your-wix-domain.com/boardrooms" target="_top">
+          <div class="icon-rail"><div class="icon" data-json="lottie/boardrooms.json" data-idleframe="90" style="--icon:120px"></div></div>
+          <div class="label">Boardrooms</div>
+        </a>
+        <a class="card" href="https://your-wix-domain.com/nightclubs" target="_top">
+          <div class="icon-rail"><div class="icon" data-json="lottie/nightclubs.json" data-idleframe="30" style="--icon:120px"></div></div>
+          <div class="label">Nightclubs</div>
+        </a>
+        <a class="card" href="https://your-wix-domain.com/restaurants-bars" target="_top">
+          <div class="icon-rail"><div class="icon" data-json="lottie/restaurants-bars.json" data-idleframe="59" style="--icon:120px"></div></div>
+          <div class="label">Restaurants & Bars</div>
+        </a>
+      </div>
+    </section>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
