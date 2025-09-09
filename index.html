@@ -100,18 +100,24 @@
   .label{ font-size: 18px; line-height: 1.25; }
 }
 
+  
   /* —— DESKTOP: 5 × 2 —— */
-  @media (min-width:1000px){
-    .wrap{ margin:64px auto; padding:0 24px; }
-    .grid{ grid-template-columns: repeat(5, minmax(0, 1fr)); }
-    :root{
-      --gap-x: 48px;
-      --gap-y: 40px;
-      --rail: 170px;
-      --icon: 140px;
-    }
-    .label{ font-size:18px; }
+@media (min-width:1000px){
+  .wrap{
+    margin: 64px auto;
+    padding-left: 0;      /* ← no left padding on desktop */
+    padding-right: 24px;  /* keep right padding */
   }
+  .grid{ grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  :root{
+    --gap-x: 48px;
+    --gap-y: 40px;
+    --rail: 170px;
+    --icon: 140px;
+  }
+  .label{ font-size:18px; }
+}
+
 </style>
 </head>
 <body>
