@@ -75,6 +75,31 @@
     .label{ font-size:16px; }
   }
 
+  /* ===== EXACT OVERRIDE: when viewport width is exactly 1752px ===== */
+@media (width: 1752px){
+  /* lock container sizing for this width */
+  .wrap{
+    max-width: 1752px;
+    margin: 64px auto;
+    padding: 0 24px;       /* set to 0 if you want the content width to be 1752 exactly */
+  }
+
+  /* keep desktop layout: 5 columns × 2 rows */
+  .grid{
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    column-gap: 56px;
+    row-gap: 44px;
+  }
+
+  /* sizes just for 1752 */
+  :root{
+    --rail: 180px;
+    --icon: 148px;
+  }
+  .icon{ --icon: 148px !important; }  /* override any inline --icon */
+  .label{ font-size: 18px; line-height: 1.25; }
+}
+
   /* —— DESKTOP: 5 × 2 —— */
   @media (min-width:1000px){
     .wrap{ margin:64px auto; padding:0 24px; }
