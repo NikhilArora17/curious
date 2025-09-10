@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Services Grid — Our Curiosities</title>
 
+<!-- Light (300) and ExtraLight (200) -->
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300&display=swap" rel="stylesheet">
 
 <style>
@@ -29,6 +30,7 @@
   html,body{ margin:0; background:var(--page-bg); font-family:'Manrope',system-ui,sans-serif; }
   .wrap{ width:100%; max-width:1600px; margin:40px auto; padding:0 var(--wrap-pad); }
 
+  /* Curiosities section */
   .curiosities{ display:flex; flex-direction:column; gap:var(--stack-gap); }
 
   .heading{
@@ -72,16 +74,6 @@
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
   }
 
-  /* Force single line for Luxury Private Cinema (all breakpoints) */
-  .cinema-card .label{
-    white-space:nowrap;
-    text-align:center;
-    max-width:none;          /* allow full width */
-    display:block;           /* reset -webkit-box clamp */
-    overflow:visible;        /* never cut off */
-    word-break:normal;
-  }
-
   /* —— TABLET —— */
   @media (min-width:750px) and (max-width:999.98px){
     :root{
@@ -99,8 +91,8 @@
   /* —— DESKTOP —— */
   @media (min-width:1000px){
     .wrap{ margin:64px auto; padding-left:0; padding-right:24px; }
-    .grid{ grid-template-columns:repeat(5, minmax(0,1fr)); justify-items:start; }
 
+    /* keep sizes exactly as before */
     :root{
       --gap-x:48px;
       --gap-y:48px;
@@ -110,15 +102,29 @@
       --copy-size:14px;
     }
 
-    .label{ font-size:18px; text-align:left; }
-
-    /* 👇 Narrow desktop tweak so 1440px fits on one line */
-    @media (max-width:1599.98px){
-      .cinema-card .label{ font-size:16px; }   /* downstep only for this one */
+    /* 5 equal columns; center each card within its column */
+    .grid{
+      grid-template-columns: repeat(5, 1fr);
+      justify-content: start;      /* pack grid flush left */
+      justify-items: center;       /* center card inside each column */
     }
 
-    /* keep cinema centered under its icon at desktop */
-    .cinema-card .label{ text-align:center; }
+    .label{ font-size:18px; text-align:center; }
+
+    /* Shift ONLY the text block so its left edge aligns with column 1 card */
+    .curiosities .heading,
+    .curiosities .copy{
+      /* column center is at 10% of the grid; subtract half the rail to hit card's left edge */
+      padding-left: calc(10% - (var(--rail) / 2));
+    }
+  }
+
+  /* Keep “Luxury Private Cinema” single-line & centered */
+  .cinema-card .label{
+    white-space: nowrap;
+    max-width: none;
+    display: block;
+    overflow: visible;
   }
 
   /* —— 4K —— */
@@ -131,7 +137,10 @@
 <body>
   <div class="wrap">
     <section class="curiosities">
-      <h2 class="heading"><span class="our">OUR</span><span class="curiosities-word">CURIOSITIES</span></h2>
+      <h2 class="heading">
+        <span class="our">OUR</span>
+        <span class="curiosities-word">CURIOSITIES</span>
+      </h2>
 
       <p class="copy">
         We call our services Curiosities because they are not merely technical solutions — they are passions pursued with precision, artistry, and a deep respect for the spaces and lives they inhabit. Each is a discipline we have mastered, yet one we continue to explore with fresh eyes and boundless creativity.
@@ -142,47 +151,38 @@
           <div class="icon-rail"><div class="icon" data-json="lottie/dynamic-lighting.json" data-idleframe="30" style="--icon:120px"></div></div>
           <div class="label">Dynamic Lighting</div>
         </a>
-
         <a class="card cinema-card" href="https://your-wix-domain.com/luxury-home-cinema" target="_top">
           <div class="icon-rail"><div class="icon" data-json="lottie/luxury-cinema.json" data-idleframe="90" style="--icon:120px"></div></div>
           <div class="label">Luxury Private Cinema</div>
         </a>
-
         <a class="card" href="https://your-wix-domain.com/network-solutions" target="_top">
           <div class="icon-rail"><div class="icon" data-json="lottie/network.json" data-idleframe="60" style="--icon:120px"></div></div>
           <div class="label">Network Solutions</div>
         </a>
-
         <a class="card" href="https://your-wix-domain.com/audio-solutions" target="_top">
           <div class="icon-rail"><div class="icon" data-json="lottie/audio.json" data-idleframe="30" style="--icon:120px"></div></div>
           <div class="label">Audio Solutions</div>
         </a>
-
         <a class="card" href="https://your-wix-domain.com/musical-fountain" target="_top">
           <div class="icon-rail"><div class="icon" data-json="lottie/musical-fountain.json" data-idleframe="30" style="--icon:120px"></div></div>
           <div class="label">Musical Fountain</div>
         </a>
-
         <a class="card" href="https://your-wix-domain.com/projection-mapping" target="_top">
           <div class="icon-rail"><div class="icon" data-json="lottie/projection-mapping.json" data-idleframe="90" style="--icon:120px"></div></div>
           <div class="label">Projection Mapping</div>
         </a>
-
         <a class="card" href="https://your-wix-domain.com/security-systems" target="_top">
           <div class="icon-rail"><div class="icon" data-json="lottie/security.json" data-idleframe="90" style="--icon:120px"></div></div>
           <div class="label">Security Systems</div>
         </a>
-
         <a class="card" href="https://your-wix-domain.com/boardrooms" target="_top">
           <div class="icon-rail"><div class="icon" data-json="lottie/boardrooms.json" data-idleframe="90" style="--icon:120px"></div></div>
           <div class="label">Boardrooms</div>
         </a>
-
         <a class="card" href="https://your-wix-domain.com/nightclubs" target="_top">
           <div class="icon-rail"><div class="icon" data-json="lottie/nightclubs.json" data-idleframe="30" style="--icon:120px"></div></div>
           <div class="label">Nightclubs</div>
         </a>
-
         <a class="card" href="https://your-wix-domain.com/restaurants-bars" target="_top">
           <div class="icon-rail"><div class="icon" data-json="lottie/restaurants-bars.json" data-idleframe="59" style="--icon:120px"></div></div>
           <div class="label">Restaurants & Bars</div>
