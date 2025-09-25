@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Services Grid — Our Curiosities</title>
 
-<!-- Light (300) and ExtraLight (200) -->
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300&display=swap" rel="stylesheet">
 
 <style>
@@ -22,7 +21,7 @@
 
     --h-color-our: #B1B5C0;
     --h-color-curiosities: #454E59;
-    --h-size: 24px;      /* mobile default */
+    --h-size: 24px;
     --copy-size: 12px;
     --stack-gap: 48px;
   }
@@ -30,7 +29,6 @@
   html,body{ margin:0; background:var(--page-bg); font-family:'Manrope',system-ui,sans-serif; }
   .wrap{ width:100%; max-width:1600px; margin:40px auto; padding:0 var(--wrap-pad); }
 
-  /* Curiosities section */
   .curiosities{ display:flex; flex-direction:column; gap:var(--stack-gap); }
 
   .heading{
@@ -74,7 +72,6 @@
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
   }
 
-  /* —— TABLET —— */
   @media (min-width:750px) and (max-width:999.98px){
     :root{
       --wrap-pad: 20px;
@@ -88,8 +85,6 @@
     .label{ font-size:16px; }
   }
 
-  /* ✅ MOBILE + TABLET: align heading/copy with first grid column */
-  /* (2 columns → first column center is at 25%; subtract half the rail) */
   @media (max-width:999.98px){
     .curiosities .heading,
     .curiosities .copy{
@@ -97,35 +92,35 @@
     }
   }
 
-  /* —— DESKTOP —— */
-  @media (min-width:1000px){
-    .wrap{ margin:64px auto; padding-left:0; padding-right:24px; }
+@media (min-width:1000px){
+  .wrap{ margin:64px auto; padding-left:0; padding-right:24px; }
 
-    :root{
-      --gap-x:48px;
-      --gap-y:48px;
-      --rail:170px;
-      --icon:140px;
-      --h-size:40px;
-      --copy-size:14px;
-    }
-
-    .grid{
-      grid-template-columns: repeat(5, 1fr);
-      justify-content: start;      /* pack grid flush left */
-      justify-items: center;       /* center card inside each column */
-    }
-
-    .label{ font-size:18px; text-align:center; }
-
-    /* Desktop alignment: 5 columns → first center at 10% */
-    .curiosities .heading,
-    .curiosities .copy{
-      padding-left: calc(10% - (var(--rail) / 2));
-    }
+  :root{
+    --gap-x:48px;
+    --gap-y:48px;
+    --rail:170px;
+    --icon:140px;
+    --h-size:40px;
+    --copy-size:14px;
   }
 
-  /* Keep “Luxury Private Cinema” single-line & centered */
+  .grid{
+    /* ⬇️ 6 per row */
+    grid-template-columns: repeat(6, 1fr);
+    justify-content: start;
+    justify-items: center;
+  }
+
+  .label{ font-size:18px; text-align:center; }
+
+  /* ⬇️ For 6 cols, first column center ≈ 8.333% */
+  .curiosities .heading,
+  .curiosities .copy{
+    padding-left: calc(8.333% - (var(--rail) / 2));
+  }
+}
+
+
   .cinema-card .label{
     white-space: nowrap;
     max-width: none;
@@ -133,7 +128,6 @@
     overflow: visible;
   }
 
-  /* —— 4K —— */
   @media (min-width:3840px){
     :root{ --h-size:52px; --copy-size:16px; }
     .wrap{ max-width:3840px; }
@@ -153,6 +147,7 @@
       </p>
 
       <div class="grid" id="services">
+        <!-- existing items -->
         <a class="card" href="https://www.mcbee.in/projects-item?rc=test-site" target="_top">
           <div class="icon-rail"><div class="icon" data-json="lottie/dynamic-lighting.json" data-idleframe="30" style="--icon:120px"></div></div>
           <div class="label">Dynamic Lighting</div>
@@ -193,6 +188,25 @@
           <div class="icon-rail"><div class="icon" data-json="lottie/restaurants-bars.json" data-idleframe="59" style="--icon:120px"></div></div>
           <div class="label">Restaurants & Bars</div>
         </a>
+
+        <!-- ✅ NEW: Auditorium -->
+        <a class="card" href="https://www.mcbee.in/projects-item-auditorium?rc=test-site" target="_top">
+          <div class="icon-rail">
+            <!-- replace path with your Lottie JSON; idleFrame = the calm frame number -->
+            <div class="icon" data-json="lottie/auditorium.json" data-idleframe="90" style="--icon:120px"></div>
+          </div>
+          <div class="label">Auditorium</div>
+        </a>
+
+        <!-- ✅ NEW: BEESIMZ (Racing Simulators) -->
+        <a class="card" href="https://www.mcbee.in/beesimz?rc=test-site" target="_top">
+          <div class="icon-rail">
+            <!-- replace path with your BEESIMZ Lottie -->
+            <div class="icon" data-json="lottie/f1.json" data-idleframe="0" style="--icon:150px"></div>
+          </div>
+          <div class="label">Racing Simulator</div>
+        </a>
+
       </div>
     </section>
   </div>
