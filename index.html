@@ -211,28 +211,98 @@
     </section>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
-  <script>
-    document.querySelectorAll('.icon').forEach(icon=>{
-      const anim = lottie.loadAnimation({
-        container: icon, renderer: 'svg', loop: false, autoplay: false, path: icon.dataset.json
-      });
-      const idle = Number(icon.dataset.idleframe || 0);
-      anim.addEventListener('DOMLoaded', ()=>{
-        const safeIdle = Math.min(idle, Math.max(0, Math.floor(anim.totalFrames) - 1));
-        anim.goToAndStop(safeIdle, true);
-      });
-      const card = icon.closest('.card');
-      card.addEventListener('mouseenter', ()=>{ anim.loop = true; anim.goToAndPlay(0,true); });
-      card.addEventListener('mouseleave', ()=>{
-        anim.loop = false; anim.stop();
-        anim.goToAndStop(Math.min(idle, Math.max(0, Math.floor(anim.totalFrames)-1)), true);
-      });
-      let tapped=false;
-      card.addEventListener('touchstart', e=>{
-        if(!tapped){ e.preventDefault(); anim.loop=true; anim.goToAndPlay(0,true); tapped=true; setTimeout(()=>tapped=false,700); }
-      }, {passive:false});
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+<script>
+  document.querySelectorAll('.icon').forEach(icon=>{
+    const anim = lottie.loadAnimation({
+      container: icon, renderer: 'svg', loop: false, autoplay: false, path: icon.dataset.json
     });
-  </script>
+    const idle = Number(icon.dataset.idleframe || 0);
+
+    function toIdle(){
+      anim.loop = false; anim.stop();
+      anim.goToAndStop(Math.min(idle, Math.max(0, Math.floor(anim.totalFrames)-1)), true);
+    }
+
+    anim.addEventListener('DOMLoaded', ()=>{
+      const safeIdle = Math.min(idle, Math.max(0, Math.floor(anim.totalFrames) - 1));
+      anim.goToAndStop(safeIdle, true);
+    });
+
+    const card = icon.closest('.card');
+
+    // Desktop / pointer hover stays as-is
+    card.addEventListener('mouseenter', ()=>{ anim.loop = true; anim.goToAndPlay(0,true); });
+    card.addEventListener('mouseleave', toIdle);
+
+    // --- Mobile/Tablet: tap = navigate, press&hold = play while holding ---
+    let holdTimer = null;
+    let isHolding = false;
+    let cancelNextClick = false;
+    let startX = 0, startY = 0;
+    const HOLD_DELAY = 350;          // ms to qualify as a "hold"
+    const MOVE_TOLERANCE = 12;       // px finger can drift while holding
+
+    const onTouchStart = (e)=>{
+      // record start point to distinguish scroll vs hold
+      const t = e.touches && e.touches[0];
+      if(!t) return;
+      startX = t.clientX; startY = t.clientY;
+      isHolding = false;
+
+      // schedule hold start
+      holdTimer = setTimeout(()=>{
+        isHolding = true;
+        anim.loop = true;
+        anim.goToAndPlay(0, true);
+        // we'll cancel navigation on touchend/click
+      }, HOLD_DELAY);
+    };
+
+    const onTouchMove = (e)=>{
+      if(!holdTimer) return;
+      const t = e.touches && e.touches[0];
+      if(!t) return;
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      if((dx*dx + dy*dy) > (MOVE_TOLERANCE*MOVE_TOLERANCE)){
+        // treat as scroll/drag → cancel hold
+        clearTimeout(holdTimer);
+        holdTimer = null;
+      }
+    };
+
+    const onTouchEnd = (e)=>{
+      if(holdTimer){
+        clearTimeout(holdTimer);
+        holdTimer = null;
+      }
+      if(isHolding){
+        // We were holding → prevent navigation
+        e.preventDefault();
+        cancelNextClick = true;  // click fires after touchend; block it once
+        toIdle();
+        isHolding = false;
+      } else {
+        // Short tap → allow normal navigation (no animation)
+        // do nothing
+      }
+    };
+
+    const onClick = (e)=>{
+      if(cancelNextClick){
+        e.preventDefault();
+        cancelNextClick = false;
+      }
+    };
+
+    // Attach touch handlers (won't affect desktop)
+    card.addEventListener('touchstart', onTouchStart, {passive:true});
+    card.addEventListener('touchmove', onTouchMove, {passive:true});
+    card.addEventListener('touchend', onTouchEnd, {passive:false});
+    card.addEventListener('click', onClick, {passive:false});
+  });
+</script>
+
 </body>
 </html>
