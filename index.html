@@ -211,7 +211,7 @@
     </section>
   </div>
 
- <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 <script>
   document.querySelectorAll('.icon').forEach(icon=>{
     const anim = lottie.loadAnimation({
@@ -231,62 +231,57 @@
 
     const card = icon.closest('.card');
 
-    // Desktop / pointer hover stays as-is
+    // Desktop hover
     card.addEventListener('mouseenter', ()=>{ anim.loop = true; anim.goToAndPlay(0,true); });
     card.addEventListener('mouseleave', toIdle);
 
-    // --- Mobile/Tablet: tap = navigate, press&hold = play while holding ---
+    // --- Mobile/Tablet: tap = navigate; press & hold = play (no nav) ---
     let holdTimer = null;
     let isHolding = false;
     let cancelNextClick = false;
     let startX = 0, startY = 0;
-    const HOLD_DELAY = 350;          // ms to qualify as a "hold"
-    const MOVE_TOLERANCE = 12;       // px finger can drift while holding
+    let lastTouchTime = 0;
+    const HOLD_DELAY = 350;
+    const MOVE_TOLERANCE = 12;
 
     const onTouchStart = (e)=>{
-      // record start point to distinguish scroll vs hold
       const t = e.touches && e.touches[0];
       if(!t) return;
+      lastTouchTime = Date.now();
       startX = t.clientX; startY = t.clientY;
       isHolding = false;
 
-      // schedule hold start
       holdTimer = setTimeout(()=>{
         isHolding = true;
         anim.loop = true;
         anim.goToAndPlay(0, true);
-        // we'll cancel navigation on touchend/click
       }, HOLD_DELAY);
     };
 
     const onTouchMove = (e)=>{
-      if(!holdTimer) return;
       const t = e.touches && e.touches[0];
       if(!t) return;
       const dx = t.clientX - startX;
       const dy = t.clientY - startY;
       if((dx*dx + dy*dy) > (MOVE_TOLERANCE*MOVE_TOLERANCE)){
-        // treat as scroll/drag → cancel hold
-        clearTimeout(holdTimer);
-        holdTimer = null;
+        if(holdTimer){ clearTimeout(holdTimer); holdTimer = null; }
+        if(isHolding){ toIdle(); isHolding = false; }
       }
     };
 
     const onTouchEnd = (e)=>{
-      if(holdTimer){
-        clearTimeout(holdTimer);
-        holdTimer = null;
-      }
+      if(holdTimer){ clearTimeout(holdTimer); holdTimer = null; }
       if(isHolding){
-        // We were holding → prevent navigation
-        e.preventDefault();
-        cancelNextClick = true;  // click fires after touchend; block it once
+        e.preventDefault();          // block navigation after a hold
+        cancelNextClick = true;      // suppress the post-touch synthetic click
         toIdle();
         isHolding = false;
-      } else {
-        // Short tap → allow normal navigation (no animation)
-        // do nothing
       }
+    };
+
+    const onTouchCancel = ()=>{
+      if(holdTimer){ clearTimeout(holdTimer); holdTimer = null; }
+      if(isHolding){ toIdle(); isHolding = false; }
     };
 
     const onClick = (e)=>{
@@ -296,13 +291,22 @@
       }
     };
 
-    // Attach touch handlers (won't affect desktop)
+    // 🚫 Prevent Chrome/Android long-press context menu while touching/holding
+    card.addEventListener('contextmenu', (e)=>{
+      if (isHolding || (Date.now() - lastTouchTime) < 1200){
+        e.preventDefault();
+      }
+    });
+
+    // Attach touch handlers (mobile/tablet only)
     card.addEventListener('touchstart', onTouchStart, {passive:true});
     card.addEventListener('touchmove', onTouchMove, {passive:true});
     card.addEventListener('touchend', onTouchEnd, {passive:false});
+    card.addEventListener('touchcancel', onTouchCancel, {passive:true});
     card.addEventListener('click', onClick, {passive:false});
   });
 </script>
+
 
 </body>
 </html>
