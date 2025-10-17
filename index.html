@@ -52,7 +52,14 @@
     align-items:start;
   }
 
-  .card{
+.label.one-line{
+  white-space: nowrap;
+  max-width: none;
+  display: block;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+}
+   .card{
     display:flex; flex-direction:column; align-items:center; gap:8px;
     text-decoration:none; outline:none; min-width:0;
   }
@@ -147,6 +154,14 @@
       </p>
 
       <div class="grid" id="services">
+        <!-- 🆕 FEATURED: Automation (first + centered) -->
+        <a class="card featured" href="https://www.mcbee.in/ourcuriosties/automation" target="_top">
+          <div class="icon-rail">
+            <div class="icon" data-json="public/lottie/automation.json" data-idleframe="49" style="--icon:110px"></div>
+          </div>
+          <div class="label">Automation</div>
+        </a>
+
         <!-- existing items -->
         <a class="card" href="https://www.mcbee.in/ourcuriosties/dynamiclighting" target="_top">
           <div class="icon-rail"><div class="icon" data-json="public/lottie/dynamic-lighting.json" data-idleframe="30" style="--icon:120px"></div></div>
@@ -176,32 +191,28 @@
           <div class="icon-rail"><div class="icon" data-json="public/lottie/security.json" data-idleframe="90" style="--icon:120px"></div></div>
           <div class="label">Security Systems</div>
         </a>
-        <a class="card" href="https://www.mcbee.in/ourcuriosties/boardrooms" target="_top">
-          <div class="icon-rail"><div class="icon" data-json="public/lottie/boardrooms.json" data-idleframe="90" style="--icon:120px"></div></div>
-          <div class="label">Boardrooms</div>
+
+        <!-- 🔁 Combined: Auditoriums & Boardrooms -->
+        <a class="card" href="https://www.mcbee.in/ourcuriosties/auditoriums-boardrooms" target="_top">
+          <div class="icon-rail">
+            <div class="icon" data-json="public/lottie/auditorium and boardroom.json" data-idleframe="90" style="--icon:120px"></div>
+          </div>
+          <div class="label one-line">Auditoriums &amp; Boardrooms</div>
+
         </a>
+
         <a class="card" href="https://www.mcbee.in/ourcuriosties/nightclubs" target="_top">
           <div class="icon-rail"><div class="icon" data-json="public/lottie/nightclubs.json" data-idleframe="30" style="--icon:120px"></div></div>
           <div class="label">Nightclubs</div>
         </a>
         <a class="card" href="https://www.mcbee.in/ourcuriosties/restaurantsandbars" target="_top">
           <div class="icon-rail"><div class="icon" data-json="public/lottie/restaurants-bars.json" data-idleframe="59" style="--icon:120px"></div></div>
-          <div class="label">Restaurants & Bars</div>
+          <div class="label">Restaurants &amp; Bars</div>
         </a>
 
-        <!-- ✅ NEW: Auditorium -->
-        <a class="card" href="https://www.mcbee.in/ourcuriosties/auditoriums" target="_top">
-          <div class="icon-rail">
-            <!-- replace path with your Lottie JSON; idleFrame = the calm frame number -->
-            <div class="icon" data-json="public/lottie/auditorium.json" data-idleframe="90" style="--icon:120px"></div>
-          </div>
-          <div class="label">Auditorium</div>
-        </a>
-
-        <!-- ✅ NEW: BEESIMZ (Racing Simulators) -->
+        <!-- ✅ BEESIMZ (Racing Simulators) -->
         <a class="card" href="https://www.mcbee.in/ourcuriosties/beesimz" target="_top">
           <div class="icon-rail">
-            <!-- replace path with your BEESIMZ Lottie -->
             <div class="icon" data-json="public/lottie/f1.json" data-idleframe="0" style="--icon:130px"></div>
           </div>
           <div class="label">BeeSimz</div>
