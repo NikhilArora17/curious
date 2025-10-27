@@ -23,7 +23,7 @@
     --h-color-curiosities: #454E59;
     --h-size: 24px;
     --copy-size: 12px;
-    --stack-gap: 48px;
+    --stack-gap: 24px;
   }
 
   html,body{ margin:0; background:var(--page-bg); font-family:'Manrope',system-ui,sans-serif; }
@@ -96,12 +96,14 @@
     .curiosities .heading,
     .curiosities .copy{
       padding-left: calc(25% - (var(--rail) / 2));
-    }
+         }
   }
 
 @media (min-width:1000px){
-  .wrap{ margin:64px auto; padding-left:24px; padding-right:24px; }
-
+  .wrap{ margin:64px auto; padding-left:0px; padding-right:24px; }
+.grid{
+    margin-inline: 12px;   /* visual gutter; wrap stays 0 padding */
+  }
   :root{
     --gap-x:48px;
     --gap-y:48px;
