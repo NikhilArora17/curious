@@ -26,6 +26,14 @@
     --stack-gap: 24px;
   }
 
+  /* ⬇️ Mobile-only override: heading 24px, body text 16px */
+  @media (max-width: 749.98px){
+    :root{
+      --h-size: 24px;
+      --copy-size: 16px;
+    }
+  }
+
   html,body{ margin:0; background:var(--page-bg); font-family:'Manrope',system-ui,sans-serif; }
   .wrap{ width:100%; max-width:1600px; margin:40px auto; padding:0 var(--wrap-pad); }
 
@@ -52,14 +60,15 @@
     align-items:start;
   }
 
-.label.one-line{
-  white-space: nowrap;
-  max-width: none;
-  display: block;
-  overflow: visible;
-  -webkit-line-clamp: unset;
-}
-   .card{
+  .label.one-line{
+    white-space: nowrap;
+    max-width: none;
+    display: block;
+    overflow: visible;
+    -webkit-line-clamp: unset;
+  }
+
+  .card{
     display:flex; flex-direction:column; align-items:center; gap:8px;
     text-decoration:none; outline:none; min-width:0;
   }
@@ -79,6 +88,12 @@
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
   }
 
+  @media (max-width: 749.98px){
+  .label{
+    font-size:16px; /* overrides the clamp() on mobile */
+  }
+}
+
   @media (min-width:750px) and (max-width:999.98px){
     :root{
       --wrap-pad: 20px;
@@ -96,39 +111,34 @@
     .curiosities .heading,
     .curiosities .copy{
       padding-left: calc(25% - (var(--rail) / 2));
-         }
+    }
   }
 
-@media (min-width:1000px){
-  .wrap{ margin:64px auto; padding-left:0px; padding-right:24px; }
-.grid{
-    margin-inline: 12px;   /* visual gutter; wrap stays 0 padding */
-  }
-  :root{
-    --gap-x:48px;
-    --gap-y:48px;
-    --rail:170px;
-    --icon:140px;
-    --h-size:40px;
-    --copy-size:14px;
-  }
+  @media (min-width:1000px){
+    .wrap{ margin:64px auto; padding-left:0px; padding-right:24px; }
+    .grid{ margin-inline: 12px; }
+    :root{
+      --gap-x:48px;
+      --gap-y:48px;
+      --rail:170px;
+      --icon:140px;
+      --h-size:40px;
+      --copy-size:14px;
+    }
 
-  .grid{
-    /* ⬇️ 6 per row */
-    grid-template-columns: repeat(6, 1fr);
-    justify-content: start;
-    justify-items: center;
+    .grid{
+      grid-template-columns: repeat(6, 1fr);
+      justify-content: start;
+      justify-items: center;
+    }
+
+    .label{ font-size:18px; text-align:center; }
+
+    .curiosities .heading,
+    .curiosities .copy{
+      padding-left: calc(8.333% - (var(--rail) / 2));
+    }
   }
-
-  .label{ font-size:18px; text-align:center; }
-
-  /* ⬇️ For 6 cols, first column center ≈ 8.333% */
-  .curiosities .heading,
-  .curiosities .copy{
-    padding-left: calc(8.333% - (var(--rail) / 2));
-  }
-}
-
 
   .cinema-card .label{
     white-space: nowrap;
@@ -200,7 +210,6 @@
             <div class="icon" data-json="public/lottie/auditorium and boardroom.json" data-idleframe="90" style="--icon:120px"></div>
           </div>
           <div class="label one-line">Auditoriums &amp; Boardrooms</div>
-
         </a>
 
         <a class="card" href="https://www.mcbee.in/ourcuriosities/nightclubs" target="_top">
@@ -319,7 +328,6 @@
     card.addEventListener('click', onClick, {passive:false});
   });
 </script>
-
 
 </body>
 </html>
