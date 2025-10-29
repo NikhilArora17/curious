@@ -24,6 +24,9 @@
     --h-size: 24px;
     --copy-size: 12px;
     --stack-gap: 24px;
+
+    /* NEW */
+    --label-measure: 16ch;
   }
 
   /* ⬇️ Mobile-only override: heading 24px, body text 16px */
@@ -83,7 +86,7 @@
     line-height:1.25;
     color:var(--label-color);
     text-align:center;
-    max-width:16ch;
+    max-width: var(--label-measure); /* CHANGED */
     word-break:break-word;
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
   }
@@ -98,6 +101,11 @@
   @media (max-width: 749.98px){
     .label{
       font-size:16px; /* overrides the clamp() on mobile */
+    }
+    /* NEW: paragraph width aligns with label width on mobile */
+    .curiosities .copy{
+      max-width: calc(var(--label-measure) + 2ch);
+      hyphens: auto;
     }
   }
 
