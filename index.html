@@ -101,6 +101,7 @@
     }
   }
 
+  /* (Old tablet block can remain; will be overridden by the new range block appended later) */
   @media (min-width:750px) and (max-width:999.98px){
     :root{
       --wrap-pad: 20px;
@@ -114,6 +115,7 @@
     .label{ font-size:16px; }
   }
 
+  /* Shared mobile+tablet heading/copy side padding */
   @media (max-width:999.98px){
     .curiosities .heading,
     .curiosities .copy{
@@ -122,6 +124,7 @@
     }
   }
 
+  /* (Old desktop block can remain; will be overridden by the new range block appended later) */
   @media (min-width:1000px){
     .wrap{ margin:64px auto; padding-left:0px; padding-right:24px; }
     .grid{ margin-inline: 12px; }
@@ -158,6 +161,71 @@
   @media (min-width:3840px){
     :root{ --h-size:52px; --copy-size:16px; }
     .wrap{ max-width:3840px; }
+  }
+
+  /* ===========================
+     🔒 FINAL OVERRIDES (placed last)
+     =========================== */
+
+  /* ---------- MOBILE (<= 749px) ---------- */
+  @media (width <= 749px){
+    /* your existing mobile values already set above */
+  }
+
+  /* ---------- TABLET (750px–999px) ---------- */
+  @media (750px <= width <= 999px){
+    :root{
+      --wrap-pad: 20px;
+      --gap-x: 28px;
+      --gap-y: 28px;
+      --rail: 140px;
+      --icon: 112px;
+      --h-size: 24px;
+      --copy-size: 16px;
+    }
+
+    .grid{
+      /* Lock tablet grid count (choose one) */
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      /* For 3-up tablet, use:
+         grid-template-columns: repeat(3, minmax(0,1fr)); */
+    }
+
+    .label{ font-size:16px; }
+
+    .curiosities .heading,
+    .curiosities .copy{
+      padding-left: calc(25% - (var(--rail) / 2));
+      padding-right: calc(25% - (var(--rail) / 2));
+    }
+  }
+
+  /* ---------- DESKTOP (>= 1000px) ---------- */
+  @media (width >= 1000px){
+    :root{
+      --gap-x: 48px;
+      --gap-y: 48px;
+      --rail: 170px;
+      --icon: 140px;
+      --h-size: 40px;
+      --copy-size: 16px;
+    }
+    .wrap{ margin:64px auto; padding-left:0; padding-right:24px; }
+
+    .grid{
+      grid-template-columns: repeat(6, 1fr);
+      justify-content: start;
+      justify-items: center;
+      margin-inline: 12px;
+    }
+
+    .label{ font-size:18px; text-align:center; }
+
+    .curiosities .heading,
+    .curiosities .copy{
+      padding-left: calc(8.333% - (var(--rail) / 2));
+      padding-right: 0;
+    }
   }
 </style>
 </head>
