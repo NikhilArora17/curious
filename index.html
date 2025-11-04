@@ -74,7 +74,7 @@
     .grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
 
-  /* Desktop baseline: 1001–1440 */
+  /* Desktop baseline: 1001–1440 (kept as your original look) */
   @media (1000.98px <= width <= 1440px){
     :root{
       --gap-x:48px; --gap-y:48px;
@@ -82,48 +82,44 @@
     }
     .grid{
       grid-template-columns: repeat(6, minmax(0, 1fr));
-      padding-inline: 8px;         /* << prevents right-edge clipping at ~1001 */
+      padding-inline: 8px;     /* prevents right-edge clipping at ~1001 */
     }
   }
 
-  /* Mobile landscape (optional 3-up) */
-  @media (width <= 749.98px) and (orientation:landscape){
-    .grid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
-  }
-
-  /* ===== Tightening in your real container (799–1155) =====
-     Keep 6×2 look; reduce gaps only; icon size same */
+  /* Your real container tighten (799–1155): same 6×2 look, shorter height */
   @media (799px <= width <= 1155px){
     :root{
-      --gap-y:16px;   /* shorter total height */
-      --gap-x:40px;   /* slightly tighter columns */
+      --gap-y:16px;      /* shorter total height */
+      --gap-x:40px;      /* slightly tighter columns */
       --rail:170px;
       --icon:140px;
     }
     .grid{
       grid-template-columns: repeat(6, minmax(0, 1fr));
-      padding-inline: 8px;         /* also guard at this band */
+      padding-inline: 8px;     /* safety buffer for edges */
     }
-    .card{ gap:6px; }              /* was 8px */
-    .label{ line-height:1.2; }     /* was 1.25 */
+    .card{ gap:6px; }
+    .label{ line-height:1.2; }
   }
 
-  /* ===== 1440+ behavior: keep relative width (no taller) =====
-     - Freeze tokens at 1440 baseline (no scaling up)
-     - Center grid in a fixed max width so height stays constant
-     - Add small side pad to avoid any edge clipping */
+  /* 1440+ RELATIVE WIDTH:
+     - Freeze icon sizes so height doesn't grow
+     - Keep vertical gap fixed to avoid vertical scroll
+     - Smoothly increase ONLY horizontal gap 48px → 96px from 1440→3840
+     - No centering/max-width; fills available width */
   @media (width >= 1440px){
     :root{
       --rail:170px;  /* freeze */
       --icon:140px;  /* freeze */
-      --gap-x:48px;  /* freeze */
-      --gap-y:48px;  /* freeze */
+      --gap-y:48px;  /* freeze vertical gap to keep total height stable */
+      /* horizontal gap scales with viewport: 48px @1440 → 96px @3840 */
+      --gap-x: clamp(48px,
+                    calc(48px + ((100vw - 1440px) * (96 - 48) / (3840 - 1440))),
+                    96px);
     }
     .grid{
       grid-template-columns: repeat(6, minmax(0, 1fr));
-      max-width: 1440px;           /* relative width: content stays 1440 wide */
-      margin-inline: auto;         /* centered */
-      padding-inline: 12px;        /* tiny buffer -> no clipping */
+      padding-inline: 12px;    /* tiny buffer to avoid edge clipping on huge screens */
     }
   }
 
