@@ -67,7 +67,7 @@
     .grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
 
-  /* Desktop: 1001–1440 (original baseline) */
+  /* Desktop: 1001–1440 (baseline) */
   @media (1000px <= width <= 1440px){
     :root{
       --gap-x:48px; --gap-y:48px;
@@ -99,19 +99,19 @@
     .grid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
   }
 
-  /* ================================
-     DESKTOP TIGHTENING (1001–1440px)
-     Keep 6×2 but reduce vertical size
-     ================================ */
-  @media (1000px <= width <= 1440px){
+  /* =========================================
+     TIGHTENING IN YOUR REAL CONTAINER (799–1155)
+     Keep 6×2 look; reduce gaps only; icon size same
+     ========================================= */
+  @media (799px <= width <= 1155px){
     :root{
-      --gap-y:16px;   /* was 48px  → shorter total height */
-      --gap-x:40px;   /* was 48px  → optional; remove if you only want vertical */
-      /* keep icon sizes so visuals match your screenshot */
-      --rail:170px;
-      --icon:140px;
+      --gap-y:16px;   /* was 48px → shorter total height */
+      --gap-x:40px;   /* was 48px → optional; bump back if you only want vertical */
+      --rail:170px;   /* keep icon rail for the same look */
+      --icon:140px;   /* keep icon size */
     }
-    .card{ gap:6px; }          /* was 8px */
+    .grid{ grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .card{ gap:6px; }        /* was 8px */
     .label{ line-height:1.2; } /* was 1.25 */
   }
 </style>
