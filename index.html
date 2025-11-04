@@ -52,7 +52,6 @@
     line-height:1.25;
     color:#000;
     text-align:center;
-    /* keep labels inside their grid cell */
     max-width:100%;
     overflow-wrap:anywhere;
     word-break:break-word;
@@ -63,7 +62,7 @@
     max-width:100%;
     overflow:hidden;
     text-overflow:ellipsis;
-    -webkit-line-clamp:unset; /* ensure single-line truncation works */
+    -webkit-line-clamp:unset;
   }
 
   /* Tablet: 751–1000 */
@@ -75,31 +74,16 @@
     .grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
 
-  /* Desktop: 1001–1440 (baseline) */
-  @media (1000px <= width <= 1440px){
+  /* Desktop baseline: 1001–1440 */
+  @media (1000.98px <= width <= 1440px){
     :root{
       --gap-x:48px; --gap-y:48px;
       --rail:170px; --icon:140px;
     }
-    .grid{ grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  }
-
-  /* >1440 — scale smoothly up to 3840 */
-  @media (width > 1440px){
-    :root{
-      /* Linear growth from 1440→3840 (delta 2400px).
-         rail: 170→240, icon: 140→200, gaps: 48→64 */
-      --rail: clamp(170px, calc(170px + ((100vw - 1440px) * (240 - 170) / 2400)), 240px);
-      --icon: clamp(140px, calc(140px + ((100vw - 1440px) * (200 - 140) / 2400)), 200px);
-      --gap-x: clamp(48px,  calc(48px  + ((100vw - 1440px) * (64 - 48)  / 2400)), 64px);
-      --gap-y: clamp(48px,  calc(48px  + ((100vw - 1440px) * (64 - 48)  / 2400)), 64px);
+    .grid{
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      padding-inline: 8px;         /* << prevents right-edge clipping at ~1001 */
     }
-    .grid{ grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  }
-
-  /* Optional: 4K hard cap */
-  @media (min-width:3840px){
-    :root{ --rail:240px; --icon:200px; --gap-x:64px; --gap-y:64px; }
   }
 
   /* Mobile landscape (optional 3-up) */
@@ -107,23 +91,43 @@
     .grid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
   }
 
-  /* =========================================
-     TIGHTENING IN YOUR REAL CONTAINER (799–1155)
-     Keep 6×2 look; reduce gaps only; icon size same
-     ========================================= */
+  /* ===== Tightening in your real container (799–1155) =====
+     Keep 6×2 look; reduce gaps only; icon size same */
   @media (799px <= width <= 1155px){
     :root{
-      --gap-y:16px;   /* was 48px → shorter total height */
-      --gap-x:40px;   /* was 48px → optional; bump back if you only want vertical */
-      --rail:170px;   /* keep icon rail for the same look */
-      --icon:140px;   /* keep icon size */
+      --gap-y:16px;   /* shorter total height */
+      --gap-x:40px;   /* slightly tighter columns */
+      --rail:170px;
+      --icon:140px;
     }
-    .grid{ grid-template-columns: repeat(6, minmax(0, 1fr)); width:100%; }
-    .card{ gap:6px; }        /* was 8px */
-    .label{ line-height:1.2; } /* was 1.25 */
+    .grid{
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      padding-inline: 8px;         /* also guard at this band */
+    }
+    .card{ gap:6px; }              /* was 8px */
+    .label{ line-height:1.2; }     /* was 1.25 */
   }
 
-  /* === FIX HORIZONTAL SCROLL (defensive) === */
+  /* ===== 1440+ behavior: keep relative width (no taller) =====
+     - Freeze tokens at 1440 baseline (no scaling up)
+     - Center grid in a fixed max width so height stays constant
+     - Add small side pad to avoid any edge clipping */
+  @media (width >= 1440px){
+    :root{
+      --rail:170px;  /* freeze */
+      --icon:140px;  /* freeze */
+      --gap-x:48px;  /* freeze */
+      --gap-y:48px;  /* freeze */
+    }
+    .grid{
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      max-width: 1440px;           /* relative width: content stays 1440 wide */
+      margin-inline: auto;         /* centered */
+      padding-inline: 12px;        /* tiny buffer -> no clipping */
+    }
+  }
+
+  /* Defensive: kill horizontal scrollbars everywhere */
   html, body, .grid-wrap, .grid { overflow-x: hidden; }
 </style>
 </head>
