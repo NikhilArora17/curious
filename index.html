@@ -52,11 +52,19 @@
     line-height:1.25;
     color:#000;
     text-align:center;
-    max-width:16ch;
+    /* keep labels inside their grid cell */
+    max-width:100%;
+    overflow-wrap:anywhere;
     word-break:break-word;
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
   }
-  .label.one-line{ white-space:nowrap; max-width:none; -webkit-line-clamp:unset; overflow:visible; }
+  .label.one-line{
+    white-space:nowrap;
+    max-width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    -webkit-line-clamp:unset; /* ensure single-line truncation works */
+  }
 
   /* Tablet: 751–1000 */
   @media (750px <= width <= 999.98px){
@@ -110,10 +118,13 @@
       --rail:170px;   /* keep icon rail for the same look */
       --icon:140px;   /* keep icon size */
     }
-    .grid{ grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .grid{ grid-template-columns: repeat(6, minmax(0, 1fr)); width:100%; }
     .card{ gap:6px; }        /* was 8px */
     .label{ line-height:1.2; } /* was 1.25 */
   }
+
+  /* === FIX HORIZONTAL SCROLL (defensive) === */
+  html, body, .grid-wrap, .grid { overflow-x: hidden; }
 </style>
 </head>
 <body>
