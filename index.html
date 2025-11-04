@@ -89,12 +89,12 @@
     .grid{ grid-template-columns: repeat(6, minmax(0, 1fr)); }
   }
 
-  /* Optional: 4K hard cap (keeps things sane at wall displays) */
+  /* Optional: 4K hard cap */
   @media (min-width:3840px){
     :root{ --rail:240px; --icon:200px; --gap-x:64px; --gap-y:64px; }
   }
 
-  /* Mobile landscape polish (optional, keeps two-up) */
+  /* Mobile landscape (keeps two-up or change to 3-up if you want) */
   @media (width <= 749.98px) and (orientation:landscape){
     .grid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
   }
@@ -103,7 +103,7 @@
 <body>
   <div class="grid-wrap">
     <div class="grid" id="services">
-      <!-- Example cards (keep/add yours) -->
+      <!-- Your cards -->
       <a class="card" href="https://www.mcbee.in/ourcuriosities/automation" target="_top">
         <div class="icon-rail"><div class="icon" data-json="public/lottie/automation.json" data-idleframe="49"></div></div>
         <div class="label">Automation</div>
@@ -205,6 +205,37 @@
       if(cancelNextClick){ e.preventDefault(); cancelNextClick=false; }
     },{passive:false});
   });
+</script>
+
+<!-- Auto-resize: report real height to Wix (prevents iframe scrollbars) -->
+<script>
+(function(){
+  function sendHeight(){
+    const h = Math.ceil(
+      Math.max(
+        document.documentElement.scrollHeight,
+        document.body.scrollHeight
+      )
+    );
+    window.parent.postMessage({ type: 'setHeight', height: h }, '*');
+  }
+
+  window.addEventListener('load', sendHeight);
+  document.fonts?.ready?.then(sendHeight);
+
+  try {
+    new ResizeObserver(sendHeight).observe(document.body);
+  } catch(e) {
+    let t;
+    window.addEventListener('resize', () => {
+      clearTimeout(t);
+      t = setTimeout(sendHeight, 100);
+    });
+    setInterval(sendHeight, 500);
+  }
+
+  setTimeout(sendHeight, 800);
+})();
 </script>
 
 </body>
