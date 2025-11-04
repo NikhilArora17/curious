@@ -22,8 +22,8 @@
   /* Grid wrapper: no side/top padding/margins */
   .grid-wrap{
     width:100%;
-    margin:0;       /* no outer margin */
-    padding:0;      /* no inner padding */
+    margin:0;
+    padding:0;
   }
 
   .grid{
@@ -33,7 +33,7 @@
     row-gap: var(--gap-y);
     justify-items:center;
     align-items:start;
-    margin:0;      /* ensure no extra spacing */
+    margin:0;
   }
 
   .card{
@@ -67,7 +67,7 @@
     .grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
 
-  /* Desktop: 1001–1440 */
+  /* Desktop: 1001–1440 (original baseline) */
   @media (1000px <= width <= 1440px){
     :root{
       --gap-x:48px; --gap-y:48px;
@@ -94,9 +94,25 @@
     :root{ --rail:240px; --icon:200px; --gap-x:64px; --gap-y:64px; }
   }
 
-  /* Mobile landscape (keeps two-up or change to 3-up if you want) */
+  /* Mobile landscape (optional 3-up) */
   @media (width <= 749.98px) and (orientation:landscape){
     .grid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+  }
+
+  /* ================================
+     DESKTOP TIGHTENING (1001–1440px)
+     Keep 6×2 but reduce vertical size
+     ================================ */
+  @media (1000px <= width <= 1440px){
+    :root{
+      --gap-y:16px;   /* was 48px  → shorter total height */
+      --gap-x:40px;   /* was 48px  → optional; remove if you only want vertical */
+      /* keep icon sizes so visuals match your screenshot */
+      --rail:170px;
+      --icon:140px;
+    }
+    .card{ gap:6px; }          /* was 8px */
+    .label{ line-height:1.2; } /* was 1.25 */
   }
 </style>
 </head>
@@ -206,37 +222,5 @@
     },{passive:false});
   });
 </script>
-
-<!-- Auto-resize: report real height to Wix (prevents iframe scrollbars) -->
-<script>
-(function(){
-  function sendHeight(){
-    const h = Math.ceil(
-      Math.max(
-        document.documentElement.scrollHeight,
-        document.body.scrollHeight
-      )
-    );
-    window.parent.postMessage({ type: 'setHeight', height: h }, '*');
-  }
-
-  window.addEventListener('load', sendHeight);
-  document.fonts?.ready?.then(sendHeight);
-
-  try {
-    new ResizeObserver(sendHeight).observe(document.body);
-  } catch(e) {
-    let t;
-    window.addEventListener('resize', () => {
-      clearTimeout(t);
-      t = setTimeout(sendHeight, 100);
-    });
-    setInterval(sendHeight, 500);
-  }
-
-  setTimeout(sendHeight, 800);
-})();
-</script>
-
 </body>
 </html>
