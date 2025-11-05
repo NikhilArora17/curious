@@ -41,8 +41,17 @@
     text-decoration:none; min-width:0;
   }
 
-  .icon-rail{ width:100%; max-width:var(--rail); height:var(--rail); display:grid; place-items:center; }
-  .icon{ width:min(var(--icon),100%) !important; height:min(var(--icon),100%) !important; aspect-ratio:1/1; }
+  /* FIX: make every icon rail a true fixed square for consistent centering */
+  .icon-rail{
+    width:var(--rail);
+    height:var(--rail);
+    display:grid; place-items:center;
+  }
+  .icon{
+    width:var(--icon) !important;
+    height:var(--icon) !important;
+    aspect-ratio:1/1;
+  }
   .icon svg{ width:100% !important; height:100% !important; display:block; }
 
   /* Titles fixed 16px everywhere */
@@ -74,7 +83,7 @@
     .grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
 
-  /* Desktop baseline: 1001–1440 (kept as your original look) */
+  /* Desktop baseline: 1001–1440 (kept as your original look + small side pad) */
   @media (1000.98px <= width <= 1440px){
     :root{
       --gap-x:48px; --gap-y:48px;
@@ -82,7 +91,7 @@
     }
     .grid{
       grid-template-columns: repeat(6, minmax(0, 1fr));
-      padding-inline: 8px;     /* prevents right-edge clipping at ~1001 */
+      padding-inline: 12px;     /* ↑ prevents right-edge clipping around 1001 */
     }
   }
 
@@ -96,17 +105,19 @@
     }
     .grid{
       grid-template-columns: repeat(6, minmax(0, 1fr));
-      padding-inline: 8px;     /* safety buffer for edges */
+      padding-inline: 12px;     /* buffer edges to stop any clip */
     }
     .card{ gap:6px; }
-    .label{ line-height:1.2; }
+    /* Revert label leading to avoid cut and allow 'one-line' to wrap here */
+    .label{ line-height:1.25; }
+    .label.one-line{ white-space:normal; -webkit-line-clamp:2; }
   }
 
   /* 1440+ RELATIVE WIDTH:
      - Freeze icon sizes so height doesn't grow
      - Keep vertical gap fixed to avoid vertical scroll
      - Smoothly increase ONLY horizontal gap 48px → 96px from 1440→3840
-     - No centering/max-width; fills available width */
+     - No centering; fills available width */
   @media (width >= 1440px){
     :root{
       --rail:170px;  /* freeze */
