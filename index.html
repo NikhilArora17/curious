@@ -19,12 +19,7 @@
     --icon:88px;    /* icon graphic */
   }
 
-  /* Grid wrapper: no side/top padding/margins */
-  .grid-wrap{
-    width:100%;
-    margin:0;
-    padding:0;
-  }
+  .grid-wrap{ width:100%; margin:0; padding:0; }
 
   .grid{
     display:grid;
@@ -36,115 +31,173 @@
     margin:0;
   }
 
-  .card{
-    display:flex; flex-direction:column; align-items:center; gap:8px;
-    text-decoration:none; min-width:0;
-  }
+  .card{ display:flex; flex-direction:column; align-items:center; gap:8px; text-decoration:none; min-width:0; }
 
-  /* Fixed square rail so every icon centers identically */
-  .icon-rail{
-    width:var(--rail);
-    height:var(--rail);
-    display:grid; place-items:center;
-  }
-  .icon{
-    width:var(--icon) !important;
-    height:var(--icon) !important;
-    aspect-ratio:1/1;
-  }
+  /* fixed square for consistent centering */
+  .icon-rail{ width:var(--rail); height:var(--rail); display:grid; place-items:center; }
+  .icon{ width:var(--icon) !important; height:var(--icon) !important; aspect-ratio:1/1; }
   .icon svg{ width:100% !important; height:100% !important; display:block; }
 
-  /* Titles fixed 16px everywhere */
+  /* labels */
   .label{
-    font-weight:200;
-    font-size:16px !important;
-    line-height:1.28;                 /* a touch more breathing room */
-    color:#000;
-    text-align:center;
-    max-width:100%;
-    overflow-x:hidden;                /* no horizontal bleed */
-    overflow-y:visible;               /* allow descenders like “g” to show */
-    padding-bottom:2px;               /* guard against baseline clipping */
+    font-weight:200; font-size:16px !important;
+    line-height:1.28; color:#000; text-align:center;
+    max-width:100%; overflow-x:hidden; overflow-y:visible; padding-bottom:2px;
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
   }
-  .label.one-line{
-    white-space:nowrap;
-    max-width:100%;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    -webkit-line-clamp:unset;
-  }
+  .label.one-line{ white-space:nowrap; max-width:100%; overflow:hidden; text-overflow:ellipsis; -webkit-line-clamp:unset; }
 
   /* Tablet: 751–1000 */
   @media (750px <= width <= 999.98px){
-    :root{
-      --gap-x:28px; --gap-y:28px;
-      --rail:140px; --icon:112px;
-    }
+    :root{ --gap-x:28px; --gap-y:28px; --rail:140px; --icon:112px; }
     .grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
 
   /* Desktop baseline: 1001–1440 */
   @media (1000.98px <= width <= 1440px){
-    :root{
-      --gap-x:48px; --gap-y:48px;
-      --rail:170px; --icon:140px;
-    }
-    .grid{
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      padding-inline: 12px;          /* stop right-edge clip near 1001px */
-    }
-    .label{ line-height:1.3; }       /* relax slightly to prevent descender cut */
+    :root{ --gap-x:48px; --gap-y:48px; --rail:170px; --icon:140px; }
+    .grid{ grid-template-columns: repeat(6, minmax(0, 1fr)); padding-inline:12px; }
+    .label{ line-height:1.3; }
   }
 
-  /* Your real container tighten (799–1155): same 6×2 look, shorter height */
+  /* Tight desktop-in-container: 799–1155 (reduce height) */
   @media (799px <= width <= 1155px){
-    :root{
-      --gap-y:16px;      /* shorter total height */
-      --gap-x:40px;      /* slightly tighter columns */
-      --rail:170px;
-      --icon:140px;
-    }
-    .grid{
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      padding-inline: 12px;          /* buffer edges */
-    }
+    :root{ --gap-y:16px; --gap-x:40px; --rail:170px; --icon:140px; }
+    .grid{ grid-template-columns: repeat(6, minmax(0, 1fr)); padding-inline:12px; }
     .card{ gap:6px; }
-    .label{
-      line-height:1.3;               /* also relax here to be safe around 1001 */
-    }
-    /* allow two-line wrapping even on "one-line" labels in this tight band */
+    .label{ line-height:1.3; }
     .label.one-line{ white-space:normal; -webkit-line-clamp:2; }
   }
 
-  /* 1440+ RELATIVE WIDTH:
-     - Freeze icon sizes so height doesn't grow
-     - Keep vertical gap fixed to avoid vertical scroll
-     - Smoothly increase ONLY horizontal gap 48px → 96px from 1440→3840
-     - No centering; fills available width */
+  /* 1440+ : icons frozen; only horizontal gap grows 48→96 */
   @media (width >= 1440px){
     :root{
-      --rail:170px;  /* freeze */
-      --icon:140px;  /* freeze */
-      --gap-y:48px;  /* freeze vertical gap to keep height stable */
-      --gap-x: clamp(48px,
-                    calc(48px + ((100vw - 1440px) * (96 - 48) / (3840 - 1440))),
-                    96px);
+      --rail:170px; --icon:140px; --gap-y:48px;
+      --gap-x: clamp(48px, calc(48px + ((100vw - 1440px) * 48 / 2400)), 96px);
     }
-    .grid{
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      padding-inline: 12px;          /* tiny buffer at huge widths */
-    }
+    .grid{ grid-template-columns: repeat(6, minmax(0, 1fr)); padding-inline:12px; }
   }
 
-  /* Defensive: kill horizontal scrollbars everywhere */
+  /* No horizontal scrollbars */
   html, body, .grid-wrap, .grid { overflow-x: hidden; }
+
+  /* ==========================================================
+     PER-ICON OVERRIDES FOR ALL ICONS — BY BREAKPOINT
+     Keep --icon <= --rail. Edit numbers as needed.
+     Targets by href substring (no HTML changes required).
+     ========================================================== */
+
+  /* (M) MOBILE <= 749 — compact but balanced */
+/* (M) MOBILE <= 749 */
+/* =========================
+   UNIFORM RAIL PER BAND
+   ========================= */
+@media (max-width: 749.98px){        :root{ --rail:110px; } }   /* mobile */
+@media (min-width: 750px) and (max-width: 999.98px){ :root{ --rail:140px; } } /* tablet */
+@media (min-width: 799px) and (max-width: 1155px){  :root{ --rail:170px; } }  /* tight desktop in container */
+@media (min-width: 1001px) and (max-width: 1440px){ :root{ --rail:170px; } }  /* normal desktop */
+@media (min-width: 1441px){                         :root{ --rail:170px; } }  /* 1440+ icons frozen */
+
+/* =========================
+   MOBILE (<= 749.98px)
+   Aim: ~90px visual graphic
+   ========================= */
+@media (max-width: 749.98px){
+  .grid a[href*="/automation"]             .icon{ --icon:88px; }
+  .grid a[href*="/dynamiclighting"]        .icon{ --icon:90px; }
+  .grid a[href*="/privatecinemas"]         .icon{ --icon:94px; }
+  .grid a[href*="/networksolutions"]       .icon{ --icon:86px; }
+  .grid a[href*="/audiosolutions"]         .icon{ --icon:92px; }
+  .grid a[href*="/musicalfountains"]       .icon{ --icon:90px; }
+  .grid a[href*="/projectionmapping"]      .icon{ --icon:94px; }
+  .grid a[href*="/securitysystems"]        .icon{ --icon:92px; }
+  .grid a[href*="/auditoriumsandboardrooms"] .icon{ --icon:93px; }
+  .grid a[href*="/nightclubs"]             .icon{ --icon:88px; }
+  .grid a[href*="/restaurantsandbars"]     .icon{ --icon:88px; }
+  .grid a[href*="/beesimz"]                .icon{ --icon:96px; }   /* narrow car → a touch bigger */
+}
+
+/* =========================
+   TABLET (750–999.98px)
+   Aim: ~116–124px graphic
+   ========================= */
+@media (min-width: 750px) and (max-width: 999.98px){
+  .grid a[href*="/automation"]             .icon{ --icon:114px; }
+  .grid a[href*="/dynamiclighting"]        .icon{ --icon:116px; }
+  .grid a[href*="/privatecinemas"]         .icon{ --icon:124px; }
+  .grid a[href*="/networksolutions"]       .icon{ --icon:112px; }
+  .grid a[href*="/audiosolutions"]         .icon{ --icon:118px; }
+  .grid a[href*="/musicalfountains"]       .icon{ --icon:116px; }
+  .grid a[href*="/projectionmapping"]      .icon{ --icon:124px; }
+  .grid a[href*="/securitysystems"]        .icon{ --icon:118px; }
+  .grid a[href*="/auditoriumsandboardrooms"] .icon{ --icon:120px; }
+  .grid a[href*="/nightclubs"]             .icon{ --icon:112px; }
+  .grid a[href*="/restaurantsandbars"]     .icon{ --icon:114px; }
+  .grid a[href*="/beesimz"]                .icon{ --icon:124px; }
+}
+
+/* =======================================
+   DESKTOP (799–1155 tight container band)
+   Aim: ~136–152px graphic inside 170 rail
+   ======================================= */
+@media (min-width: 799px) and (max-width: 1155px){
+  .grid a[href*="/automation"]             .icon{ --icon:120px; }
+  .grid a[href*="/dynamiclighting"]        .icon{ --icon:138px; }
+  .grid a[href*="/privatecinemas"]         .icon{ --icon:148px; }
+  .grid a[href*="/networksolutions"]       .icon{ --icon:136px; }
+  .grid a[href*="/audiosolutions"]         .icon{ --icon:144px; }
+  .grid a[href*="/musicalfountains"]       .icon{ --icon:138px; }
+  .grid a[href*="/projectionmapping"]      .icon{ --icon:130px; }
+  .grid a[href*="/securitysystems"]        .icon{ --icon:140px; }
+  .grid a[href*="/auditoriumsandboardrooms"] .icon{ --icon:130px; }
+  .grid a[href*="/nightclubs"]             .icon{ --icon:128px; }  /* wider wordmark → slightly smaller */
+  .grid a[href*="/restaurantsandbars"]     .icon{ --icon:138px; }
+  .grid a[href*="/beesimz"]                .icon{ --icon:152px; }  /* narrow car → bigger to match height */
+}
+
+/* ===============================
+   DESKTOP (1001–1440)
+   Same visual as tight band
+   =============================== */
+@media (min-width: 1001px) and (max-width: 1440px){
+  .grid a[href*="/automation"]             .icon{ --icon:120px; }
+  .grid a[href*="/dynamiclighting"]        .icon{ --icon:140px; }
+  .grid a[href*="/privatecinemas"]         .icon{ --icon:148px; }
+  .grid a[href*="/networksolutions"]       .icon{ --icon:136px; }
+  .grid a[href*="/audiosolutions"]         .icon{ --icon:144px; }
+  .grid a[href*="/musicalfountains"]       .icon{ --icon:140px; }
+  .grid a[href*="/projectionmapping"]      .icon{ --icon:130px; }
+  .grid a[href*="/securitysystems"]        .icon{ --icon:140px; }
+  .grid a[href*="/auditoriumsandboardrooms"] .icon{ --icon:130px; }
+  .grid a[href*="/nightclubs"]             .icon{ --icon:128px; }
+  .grid a[href*="/restaurantsandbars"]     .icon{ --icon:140px; }
+  .grid a[href*="/beesimz"]                .icon{ --icon:152px; }
+}
+
+/* ===============================
+   1441+ (icons frozen; gaps grow)
+   =============================== */
+@media (min-width: 1441px){
+  .grid a[href*="/automation"]             .icon{ --icon:120px; }
+  .grid a[href*="/dynamiclighting"]        .icon{ --icon:140px; }
+  .grid a[href*="/privatecinemas"]         .icon{ --icon:148px; }
+  .grid a[href*="/networksolutions"]       .icon{ --icon:136px; }
+  .grid a[href*="/audiosolutions"]         .icon{ --icon:144px; }
+  .grid a[href*="/musicalfountains"]       .icon{ --icon:140px; }
+  .grid a[href*="/projectionmapping"]      .icon{ --icon:130px; }
+  .grid a[href*="/securitysystems"]        .icon{ --icon:140px; }
+  .grid a[href*="/auditoriumsandboardrooms"] .icon{ --icon:130px; }
+  .grid a[href*="/nightclubs"]             .icon{ --icon:128px; }
+  .grid a[href*="/restaurantsandbars"]     .icon{ --icon:140px; }
+  .grid a[href*="/beesimz"]                .icon{ --icon:152px; }
+}
+
+
 </style>
 </head>
 <body>
   <div class="grid-wrap">
     <div class="grid" id="services">
-      <!-- Your cards -->
       <a class="card" href="https://www.mcbee.in/ourcuriosities/automation" target="_top">
         <div class="icon-rail"><div class="icon" data-json="public/lottie/automation.json" data-idleframe="49"></div></div>
         <div class="label">Automation</div>
@@ -210,9 +263,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 <script>
   document.querySelectorAll('.icon').forEach(icon=>{
-    const anim = lottie.loadAnimation({
-      container: icon, renderer: 'svg', loop: false, autoplay: false, path: icon.dataset.json
-    });
+    const anim = lottie.loadAnimation({ container: icon, renderer: 'svg', loop: false, autoplay: false, path: icon.dataset.json });
     const idle = Number(icon.dataset.idleframe || 0);
     const toIdle = ()=>{ anim.loop = false; anim.stop(); anim.goToAndStop(Math.min(idle, Math.max(0, Math.floor(anim.totalFrames)-1)), true); };
     anim.addEventListener('DOMLoaded', ()=>{ toIdle(); });
