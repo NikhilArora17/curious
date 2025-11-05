@@ -41,7 +41,7 @@
     text-decoration:none; min-width:0;
   }
 
-  /* FIX: make every icon rail a true fixed square for consistent centering */
+  /* Fixed square rail so every icon centers identically */
   .icon-rail{
     width:var(--rail);
     height:var(--rail);
@@ -58,13 +58,14 @@
   .label{
     font-weight:200;
     font-size:16px !important;
-    line-height:1.25;
+    line-height:1.28;                 /* a touch more breathing room */
     color:#000;
     text-align:center;
     max-width:100%;
-    overflow-wrap:anywhere;
-    word-break:break-word;
-    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+    overflow-x:hidden;                /* no horizontal bleed */
+    overflow-y:visible;               /* allow descenders like “g” to show */
+    padding-bottom:2px;               /* guard against baseline clipping */
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
   }
   .label.one-line{
     white-space:nowrap;
@@ -83,7 +84,7 @@
     .grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
 
-  /* Desktop baseline: 1001–1440 (kept as your original look + small side pad) */
+  /* Desktop baseline: 1001–1440 */
   @media (1000.98px <= width <= 1440px){
     :root{
       --gap-x:48px; --gap-y:48px;
@@ -91,8 +92,9 @@
     }
     .grid{
       grid-template-columns: repeat(6, minmax(0, 1fr));
-      padding-inline: 12px;     /* ↑ prevents right-edge clipping around 1001 */
+      padding-inline: 12px;          /* stop right-edge clip near 1001px */
     }
+    .label{ line-height:1.3; }       /* relax slightly to prevent descender cut */
   }
 
   /* Your real container tighten (799–1155): same 6×2 look, shorter height */
@@ -105,11 +107,13 @@
     }
     .grid{
       grid-template-columns: repeat(6, minmax(0, 1fr));
-      padding-inline: 12px;     /* buffer edges to stop any clip */
+      padding-inline: 12px;          /* buffer edges */
     }
     .card{ gap:6px; }
-    /* Revert label leading to avoid cut and allow 'one-line' to wrap here */
-    .label{ line-height:1.25; }
+    .label{
+      line-height:1.3;               /* also relax here to be safe around 1001 */
+    }
+    /* allow two-line wrapping even on "one-line" labels in this tight band */
     .label.one-line{ white-space:normal; -webkit-line-clamp:2; }
   }
 
@@ -122,15 +126,14 @@
     :root{
       --rail:170px;  /* freeze */
       --icon:140px;  /* freeze */
-      --gap-y:48px;  /* freeze vertical gap to keep total height stable */
-      /* horizontal gap scales with viewport: 48px @1440 → 96px @3840 */
+      --gap-y:48px;  /* freeze vertical gap to keep height stable */
       --gap-x: clamp(48px,
                     calc(48px + ((100vw - 1440px) * (96 - 48) / (3840 - 1440))),
                     96px);
     }
     .grid{
       grid-template-columns: repeat(6, minmax(0, 1fr));
-      padding-inline: 12px;    /* tiny buffer to avoid edge clipping on huge screens */
+      padding-inline: 12px;          /* tiny buffer at huge widths */
     }
   }
 
